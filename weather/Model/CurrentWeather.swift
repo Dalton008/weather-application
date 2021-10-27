@@ -14,12 +14,12 @@ struct CurrentWeather {
 	
 	let currentTemp: Double
 	var currentTempString: String {
-		return "\(currentTemp.rounded())"
+		return String(format: "%.0f", currentTemp)
 	}
 	
 	let currentFeelsLike: Double
 	var currentFeelsLikeString: String {
-		return "\(currentFeelsLike.rounded())"
+		return String(format: "%.0f", currentFeelsLike)
 	}
 	
 	let id: Int

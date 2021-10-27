@@ -7,31 +7,62 @@
 //
 
 import Foundation
+import CoreLocation
 
-struct APIManager {
+class APIManager {
 	
-	func getCurrentWeather(forCity: String) {
-		
-		let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(forCity)&appid=485da49d6847dab6181280b0d0a6cbed"
-		guard let url = URL(string: urlString) else { return }
+	enum RequestType {
+		case cityName(city: String)
+		case coordinate(latitide: CLLocationDegrees, longitude: CLLocationDegrees)
+	}
+	
+	var onComplition: ((CurrentWeather) -> Void)?
+	
+	private func perforfmRequest(withURL: String) {
+		guard let url = URL(string: withURL) else { return }
 		let session = URLSession(configuration: .default)
 		let task = session.dataTask(with: url) { data, response, error in
 			if let data = data {
-				self.parseJSON(data: data)
+				if let currentWeather = self.parseJSON(data: data) {
+					self.onComplition?(currentWeather)
+				}
 			}
 		}
 		task.resume()
 	}
 	
-	func parseJSON(data: Data) -> CurrentWeather? {
+	func getCurrentWeather(forRequestType: RequestType) {
+		var urlString = ""
+		
+		switch forRequestType {
+		case .cityName(let city):
+			urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=485da49d6847dab6181280b0d0a6cbed&units=metric"
+		case .coordinate(let latitude, let longitude):
+			urlString = "api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=485da49d6847dab6181280b0d0a6cbed"
+		}
+		perforfmRequest(withURL: urlString)
+	}
+	
+//	func getCurrentWeather(forCity: String) {
+//
+//		let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(forCity)&appid=485da49d6847dab6181280b0d0a6cbed&units=metric"
+//		perforfmRequest(withURL: urlString)
+//	}
+//
+//	func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+//
+//		let urlString = "api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=485da49d6847dab6181280b0d0a6cbed"
+//		perforfmRequest(withURL: urlString)
+//	}
+	
+	private func parseJSON(data: Data) -> CurrentWeather? {
 		let decoder = JSONDecoder()
 		
 		do {
 			let currentWeatherData = try decoder.decode(CurrentWeatherData.self, from: data)
-//			print(currentWeatherData.main.temp)
 			guard let currentWeather = CurrentWeather(currentWeatherData: currentWeatherData) else { return nil }
-			print(currentWeather.cityName)
-			print(currentWeather.currentTempString)
+//			print(currentWeather.cityName)
+//			print(currentWeather.currentTempString)
 			return currentWeather
 		} catch let error as NSError {
 			print(error.localizedDescription)
