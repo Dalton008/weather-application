@@ -1,1 +1,3 @@
 # weather-application
+
+API: OpenWeather
