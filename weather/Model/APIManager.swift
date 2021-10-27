@@ -38,22 +38,10 @@ class APIManager {
 		case .cityName(let city):
 			urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=485da49d6847dab6181280b0d0a6cbed&units=metric"
 		case .coordinate(let latitude, let longitude):
-			urlString = "api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=485da49d6847dab6181280b0d0a6cbed"
+			urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=485da49d6847dab6181280b0d0a6cbed&units=metric"
 		}
 		perforfmRequest(withURL: urlString)
 	}
-	
-//	func getCurrentWeather(forCity: String) {
-//
-//		let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(forCity)&appid=485da49d6847dab6181280b0d0a6cbed&units=metric"
-//		perforfmRequest(withURL: urlString)
-//	}
-//
-//	func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-//
-//		let urlString = "api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=485da49d6847dab6181280b0d0a6cbed"
-//		perforfmRequest(withURL: urlString)
-//	}
 	
 	private func parseJSON(data: Data) -> CurrentWeather? {
 		let decoder = JSONDecoder()
@@ -61,8 +49,6 @@ class APIManager {
 		do {
 			let currentWeatherData = try decoder.decode(CurrentWeatherData.self, from: data)
 			guard let currentWeather = CurrentWeather(currentWeatherData: currentWeatherData) else { return nil }
-//			print(currentWeather.cityName)
-//			print(currentWeather.currentTempString)
 			return currentWeather
 		} catch let error as NSError {
 			print(error.localizedDescription)
