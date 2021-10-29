@@ -24,7 +24,7 @@ struct CurrentWeather {
 	
 	let id: Int
 	
-	init?(currentWeatherData: CurrentWeatherData) {
+	init(currentWeatherData: CurrentWeatherData) {
 		cityName = currentWeatherData.name
 		currentTemp = currentWeatherData.main.temp
 		currentFeelsLike = currentWeatherData.main.feelsLike
