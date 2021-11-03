@@ -13,10 +13,32 @@ class MyView: UIView {
 	var delegate: SearchCityDelegate?
 	
 	private let mainLabel = UILabel()
-	private let searchCityButton = UIButton()
-	private var tempLabel = UILabel()
-	private var feelsLikeLabel = UILabel()
-	private var cityLabel = UILabel()
+	private lazy var searchCityButton: UIButton = {
+		let button = UIButton()
+		button.backgroundColor = .systemBlue
+		button.layer.cornerRadius = 10
+		button.setTitle("Search city", for: .normal)
+		button.addTarget(self, action: #selector(searchCityButtonTap), for: .touchUpInside)
+		return button
+	}()
+	private lazy var tempLabel: UILabel = {
+		let label = UILabel()
+		label.backgroundColor = .lightGray
+		label.textAlignment = .center
+		return label
+	}()
+	private lazy var feelsLikeLabel: UILabel = {
+		let label = UILabel()
+		label.backgroundColor = .lightGray
+		label.textAlignment = .center
+		return label
+	}()
+	private lazy var cityLabel: UILabel = {
+		let lable = UILabel()
+		lable.backgroundColor = .lightGray
+		lable.textAlignment = .center
+		return lable
+	}()
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -42,28 +64,18 @@ class MyView: UIView {
 	
 	private func createSearchCityButton() {
 		self.setupConstraints(label: searchCityButton, topAnchor: mainLabel.topAnchor, botAnchor: nil, leftAnchor: mainLabel.leadingAnchor, rightAnchor: mainLabel.trailingAnchor, topConst: 20, botConst: nil, leadingConst: 20, trailingConst: -20, heightConst: 40, widthConst: nil)
-		searchCityButton.backgroundColor = .systemBlue
-		searchCityButton.layer.cornerRadius = 10
-		searchCityButton.setTitle("Search city", for: .normal)
-		searchCityButton.addTarget(self, action: #selector(searchCityButtonTap), for: .touchUpInside)
 	}
 
 	private func createTempLabel() {
 		mainLabel.setupConstraints(label: tempLabel, topAnchor: searchCityButton.bottomAnchor, botAnchor: nil, leftAnchor: mainLabel.leadingAnchor, rightAnchor: mainLabel.trailingAnchor, topConst: 20, botConst: nil, leadingConst: 16, trailingConst: -16, heightConst: 50, widthConst: nil)
-		tempLabel.backgroundColor = .lightGray
-		tempLabel.textAlignment = .center
 	}
 
 	private func createFeelsLikeLabel() {
 		mainLabel.setupConstraints(label: feelsLikeLabel, topAnchor: tempLabel.bottomAnchor, botAnchor: nil, leftAnchor: mainLabel.leadingAnchor, rightAnchor: mainLabel.trailingAnchor, topConst: 20, botConst: nil, leadingConst: 16, trailingConst: -16, heightConst: 50, widthConst: nil)
-		feelsLikeLabel.backgroundColor = .lightGray
-		feelsLikeLabel.textAlignment = .center
 	}
 
 	private func createCityLabel() {
 		mainLabel.setupConstraints(label: cityLabel, topAnchor: feelsLikeLabel.bottomAnchor, botAnchor: nil, leftAnchor: mainLabel.leadingAnchor, rightAnchor: mainLabel.trailingAnchor, topConst: 20, botConst: nil, leadingConst: 16, trailingConst: -16, heightConst: 50, widthConst: nil)
-		cityLabel.backgroundColor = .lightGray
-		cityLabel.textAlignment = .center
 	}
 
 	func updateInterface(weather: CurrentWeather) {
