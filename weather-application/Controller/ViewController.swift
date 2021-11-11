@@ -42,25 +42,6 @@ class ViewController: UIViewController {
 	private func addMyView() {
 		self.view.setupConstraints(label: myView, topAnchor: view.topAnchor, botAnchor: view.bottomAnchor, leftAnchor: view.leadingAnchor, rightAnchor: view.trailingAnchor, topConst: 0, botConst: 0, leadingConst: 0, trailingConst: 0, heightConst: nil, widthConst: nil)
 	}
-	
-	@objc private func searchCityButtonTap() {
-		alert = UIAlertController(title: "Введите город:", message: nil, preferredStyle: .alert)
-		alert.addTextField { (textField) in
-			textField.placeholder = "Введите город"
-		}
-		
-		let okButton = UIAlertAction(title: "Ok", style: .default) { action  in
-			guard let cityName = self.alert.textFields?.first?.text else { return }
-			let city = cityName.split(separator: " ").joined(separator: "%20")
-			self.apiManager.getCurrentWeather(forRequestType: .cityName(city: city))
-		}
-		let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-		
-		alert.addAction(okButton)
-		alert.addAction(cancelButton)
-	
-		present(alert, animated: true, completion: nil)
-	}
 }
 
 extension ViewController: CLLocationManagerDelegate {
