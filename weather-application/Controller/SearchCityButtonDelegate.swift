@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol SearchCityDelegate {
+protocol SearchCityDelegate: AnyObject {
 	func buttonDidTap()
 }

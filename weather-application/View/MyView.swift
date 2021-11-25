@@ -10,7 +10,7 @@ import UIKit
 
 class MyView: UIView {
 	
-	var delegate: SearchCityDelegate?
+	weak var delegate: SearchCityDelegate?
 	
 	private let mainLabel = UILabel()
 	private lazy var searchCityButton: UIButton = {
